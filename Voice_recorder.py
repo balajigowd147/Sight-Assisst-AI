@@ -73,8 +73,8 @@ def listen_command():
             return text
         except:
             return ""
-while True:
-    if listen_wake_up():
-        while True:
-            command = listen_command()
-            print("Final:", command)    
+# while True:
+#     if listen_wake_up():
+#         while True:
+#             command = listen_command()
+#             print("Final:", command)    
