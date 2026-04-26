@@ -55,8 +55,7 @@ Be direct like:
         generated_ids = model.generate(
             **inputs,
             max_new_tokens=40,
-            # temperature=0.3,
-            do_sample=False,        # Changed to True
+            do_sample=False,        
             use_cache=True
         )
     
