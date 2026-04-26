@@ -89,4 +89,4 @@ def get_intent(user_input):
         return "chat"
     
 
-print(get_intent("is there any obstacle infront of me??"))
+# print(get_intent("is there any obstacle infront of me??"))
