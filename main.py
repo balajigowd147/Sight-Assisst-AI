@@ -1,34 +1,32 @@
 import time
 from Image_Loading.Image_processing import image_loading
 from Text_Generation.Text_Generation import image_description
-from Vocals_Generation.speech import speak_async
-
-last_run = 0
-last_response = ""
-
-
-def get_navigation_query(mode="forward"):
-    if mode == "forward":
-        return "Is it safe to move forward?"
-    elif mode == "left":
-        return "Is it safe to move left?"
-    elif mode == "right":
-        return "Is it safe to move right?"
-    else:
-        return "What is directly in front of me?"
-
+from Vocals_Generation.speech import speak
+from Voice_recorder import listen_command , listen_wake_up
+from intent_detection import detect_task , get_intent
+from chat_model import chat_response
+from image_loader import capture_image
 
 while True:
-    image_path = "image_bikes.jpeg"  # replace with webcam frame later
-    image = image_loading(image_path)
+    if listen_wake_up():
 
-    if time.time() - last_run > 2:  # run every 2 sec
-        query = get_navigation_query("forward")
-        response = image_description(image, query)
+        while True:
+            text = listen_command()
 
-        if response != last_response:
-            print("AI:", response)
-            speak_async(response)
-            last_response = response
+            task , score = detect_task(text)
+            intent = get_intent(task)
+            print(intent)
+            
+            if "stop" in text or "exit" in text:
+                print(" Assistant stopped")
+                break
 
-        last_run = time.time()
+            if intent == "vision":
+                img = capture_image()
+                description = image_description(img)
+                speak(description)
+
+            else:
+                text = chat_response(text)
+                speak(text)
+
